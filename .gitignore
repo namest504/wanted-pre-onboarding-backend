@@ -1,3 +1,6 @@
 /.idea/
 /src/main/resources/application-prod.yml
 /.gradle/
+/build/
+/out/
+/data/
