@@ -1,0 +1,43 @@
+version: "3"
+
+services:
+  database:
+    container_name: mysql
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3306:3306
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./data/mysql/:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: boardingdb
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: Asia/Seoul
+    networks:
+      - pre_on_boarding
+  application:
+    container_name: spring
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SPRING_PROFILE: dev
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      JWT_SECRET_KEY: dGhpc2lzdGVtcHRoaXNpc3RlbXB0aGlzaXN0ZW1wdGhpc2lzdGVtcHRoaXNpc3RlbXB0aGlzaXN0ZW1wdGhpc2lzdGVtcHRoaXNpc3RlbXB0aGlzaXN0ZW1wdGhpc2lzdGVtcHRoaXNpc3RlbXB0aGlzaXN0ZW1wdGhpc2lzdGVtcHRoaXNpc3RlbXA=
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/boardingdb?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    networks:
+      - pre_on_boarding
+
+networks:
+  pre_on_boarding:
