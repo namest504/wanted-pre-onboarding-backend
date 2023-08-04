@@ -194,10 +194,6 @@ body
 [Request]
 ```text
 POST /article/page/{page}
-header
-    {
-        "Authorization" : "Bearer ...Access Token value..."
-    }
 body
     {
       "title": "입력된 게시글 제목",
